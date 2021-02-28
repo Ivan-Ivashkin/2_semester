@@ -33,12 +33,15 @@ void remove(Node ** head, int value)
     Node * p_node = *head;
     Node * p_node_prev = *head;
 
-    int flag;
-    flag = 1;
+    int flag = 1;
 
     while (flag) {
        if (p_node->value == value) {
-           p_node_prev->next = p_node->next;
+
+           if (p_node_prev->next == p_node->next) {
+               *head = p_node_prev->next;
+           } else {p_node_prev->next = p_node->next;}
+
            delete [] p_node;
            flag = 0;
        }
@@ -50,6 +53,7 @@ void remove(Node ** head, int value)
 int main(int argc, char const *argv[])
 {
     Node * list = NULL;
+    for (int i = 1; i <= 10; ++i) push_left(&list, i);
     for (int i = 1; i <= 10; ++i) push_left(&list, i);
     print_list(list);
     remove(&list, 5);
