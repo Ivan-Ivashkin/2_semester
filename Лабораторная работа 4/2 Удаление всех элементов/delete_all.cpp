@@ -29,11 +29,17 @@ void print_list(Node * head)
 }
 
 void clear_list(Node ** head) {
-    Node * p_node = new Node;
-    p_node = *head; // указатель на голову
-    delete [] *head;
-    if (p_node->next != NULL) {*head = p_node;}
-    else (*head = NULL);
+    Node * p_node = *head;
+    Node * p_node_next = p_node->next;
+
+    while (p_node->next != NULL) {
+        delete [] p_node;
+        p_node = p_node_next;
+        p_node_next = p_node->next;
+        *head = p_node;
+    }
+    delete [] p_node;
+    *head = NULL;
 }
 
 int main(int argc, char const *argv[])
@@ -42,5 +48,6 @@ int main(int argc, char const *argv[])
     for (int i = 1; i <= 10; ++i) push_left(&list, i);
     print_list(list);
     clear_list(&list);
+    print_list(list);
     return 0;
 }
