@@ -12,11 +12,28 @@ struct string {
         capacity = 0;
     }
 
-    string(size_t cnt, char c) {  }  // Заполняющий конструктор
+    string(size_t cnt, char c) // Заполняющий конструктор
+    {
+        size = cnt;
+        capacity = cnt;
 
-    string(const string& s) {  }  // Копирующий конструктор
+        str = new char[capacity + 1];
+        for (int i = 0; i < cnt; i++) {
+            str[i] = c;
+        }
+        str[cnt] = '\0';
+    }
 
-    string(char c)  // Конструктор строки из одного символа
+    string(const string& s) // Копирующий конструктор
+    {
+        size = s.string;
+        capacity = s.string;
+        str = *s;
+    }
+
+    string(char c) // Конструктор строки из одного символа
+    {
+    }
 
     string(const char * c_str)  // Конструктор строки из c-style строки (массива символов)
 
