@@ -47,7 +47,7 @@ struct string {
 
     string(const char * c_str)  // Конструктор строки из c-style строки (массива символов)
     {
-        i = 0;
+        int i = 0;
         while (c_str[i] != '\0') {
             str[i] = c_str[i];
             i++;
@@ -56,11 +56,20 @@ struct string {
         size = i - 1;
         capacity = 2*size;
     }
-    ~string();     //очистить всю используемую память
 
-    string& operator= (const string& new_str) {  }
+    ~string() //очистить всю используемую память
+    {
+        delete []str;
+        str = NULL;
+        size = 0;
+        capacity = 0;
+    };
 
-    bool operator== (const string& other) {  }
+    string& operator= (const string& new_str) {
+    }
+
+    bool operator== (const string& other) {
+    }
 
     bool operator!= (const string& other) {  }
 
