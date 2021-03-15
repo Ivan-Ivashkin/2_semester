@@ -28,6 +28,12 @@ struct string {
     {
         size = s.size;
         capacity = s.capacity;
+
+        str = new char[capacity + 1];
+        for (int i = 0; i < size; i++) {
+            str[i] = s.str[i];
+        }
+        str[size] = '\0';
     }
 
     string(char c) // Конструктор строки из одного символа
@@ -40,7 +46,16 @@ struct string {
     }
 
     string(const char * c_str)  // Конструктор строки из c-style строки (массива символов)
+    {
+        i = 0;
+        while (c_str[i] != '\0') {
+            str[i] = c_str[i];
+            i++;
+        }
 
+        size = i - 1;
+        capacity = 2*size;
+    }
     ~string();     //очистить всю используемую память
 
     string& operator= (const string& new_str) {  }
@@ -86,3 +101,9 @@ int stoi(const string str, size_t pos = 0, int base = 10 );
 // base - основание системы счисления
 // Числа могут быть отрицательными
 // Обработка чисел в сс > 10. Большие и маленькие буквы.
+
+int main() {
+    string x;
+    
+    return 0;
+}
