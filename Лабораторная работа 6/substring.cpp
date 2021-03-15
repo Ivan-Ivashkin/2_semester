@@ -15,7 +15,7 @@ struct string {
     string(size_t cnt, char c) // Заполняющий конструктор
     {
         size = cnt;
-        capacity = cnt;
+        capacity = 2*cnt;
 
         str = new char[capacity + 1];
         for (int i = 0; i < cnt; i++) {
@@ -26,13 +26,17 @@ struct string {
 
     string(const string& s) // Копирующий конструктор
     {
-        size = s.string;
-        capacity = s.string;
-        str = *s;
+        size = s.size;
+        capacity = s.capacity;
     }
 
     string(char c) // Конструктор строки из одного символа
     {
+        size = 1;
+        capacity = 2;
+        str = new char[capacity + 1];
+        str[0] = c;
+        str[1] = '\0';
     }
 
     string(const char * c_str)  // Конструктор строки из c-style строки (массива символов)
