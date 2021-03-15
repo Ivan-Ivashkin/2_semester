@@ -52,7 +52,7 @@ void insert(Stack ** head, int value)
 
     } else {
         int num = depth(*head) / 2;
-        if (num % 2 == 0) {
+        if (depth(*head) % 2 != 0) {
             num++;
         }
 
@@ -99,6 +99,16 @@ void clear(Stack ** head) {
     }
     delete [] p_node;
     *head = NULL;
+}
+
+void print_list(Stack ** head)
+{
+    Stack * p_node = *head;
+    while (p_node != NULL) {
+        std::cout << p_node->value << ' ';
+        p_node = p_node->next;
+    }
+    std::cout << '\n';
 }
 
 int main(int argc, char const *argv[])
