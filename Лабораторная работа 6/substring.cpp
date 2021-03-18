@@ -68,10 +68,21 @@ struct string {
     string& operator= (const string& new_str) {
     }
 
-    bool operator== (const string& other) {
+    bool operator== (const string& other)
+    {
+        if (size != other.size) {return false;}
+
+        for (int i = 0; i < size; i++)
+        {
+            if (str[i] != other.str[i]) {return false;}
+        }
+        return true;
     }
 
-    bool operator!= (const string& other) {  }
+    bool operator!= (const string& other)
+    {
+        return !(*this == other);
+    }
 
     bool operator> (const string& other) {  }
 
@@ -91,7 +102,11 @@ struct string {
 
     void shrink_to_fit();  //очистить неиспользуемую память
 
-    void clear();   //очистить содержимое строки, занимаемое место при этом не меняется
+    void clear() //очистить содержимое строки, занимаемое место при этом не меняется
+    {
+        *str = 0;
+        size = 0;
+    };
 
     friend std::ostream& operator<< (std::ostream& ostr, const string& str) {  }
     friend std::istream& operator>> (std::istream& istr, const string& str) {  }
