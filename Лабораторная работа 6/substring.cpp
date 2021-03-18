@@ -65,9 +65,6 @@ struct string {
         capacity = 0;
     };
 
-    string& operator= (const string& new_str) {
-    }
-
     bool operator== (const string& other)
     {
         if (size != other.size) {return false;}
@@ -103,7 +100,7 @@ struct string {
 
     string& operator+= (const string& other) {  }
 
-    char operator[] (unsigned int pos) const {  }
+    char operator[] (unsigned int pos) const {return str[pos];}
 
     void append(const string other);  // дописать в конец данной строки другую
 
@@ -119,17 +116,21 @@ struct string {
     {
         *str = 0;
         size = 0;
+        str[0] = '\0';
     };
 
-    friend std::ostream& operator<< (std::ostream& ostr, const string& str) {  }
-    friend std::istream& operator>> (std::istream& istr, const string& str) {  }
+    friend std::ostream& operator<< (std::ostream& ostr, const string& str) {return ostr << str.str;}
+
+    friend std::istream& operator>> (std::istream& istr, const string& str) {return istr >> str.str;}
 
 };
 
 
 string operator + (const string & str1, const string & str2)
 {
-
+    string mem = str1;
+    mem += str2;
+    return mem;
 }
 
 
@@ -140,7 +141,10 @@ int stoi(const string str, size_t pos = 0, int base = 10 );
 // Обработка чисел в сс > 10. Большие и маленькие буквы.
 
 int main() {
+
     string x;
+    std::cin >> x;
+    std::cout << x;
     
     return 0;
 }
