@@ -84,9 +84,22 @@ struct string {
         return !(*this == other);
     }
 
-    bool operator> (const string& other) {  }
+    bool operator> (const string& other)
+    {
+        for (int i = 0; i < size; i++)
+        {
+            if (str[i] != '\0' and other.str[i] == '\0') {return true;}
+            if (str[i] > other.str[i]) {return true;}
+            if (str[i] < other.str[i]) {return false;}
+        }
+        return false;
+    }
 
-    bool operator< (const string& other) {  }
+    bool operator< (const string& other)
+    {
+        if (*this == other) {return false;}
+        return !(*this > other);
+    }
 
     string& operator+= (const string& other) {  }
 
