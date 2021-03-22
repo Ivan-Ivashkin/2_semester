@@ -124,7 +124,16 @@ struct string {
     void append(const string other) {*this += other;}  // дописать в конец данной строки другую
 
     void resize(unsigned int new_capacity) // увеличить/уменьшить емкость строки
-    {};
+    {
+        if (new_capacity >= capacity) {reserve(new_capacity);}
+        else
+        {
+            str[new_capacity + 1] = '\0';
+            realloc(str, new_capacity + 1);
+        }
+        capacity = new_capacity;
+              
+    };
 
     void reserve(unsigned int new_capacity) // зарезервировать память в нужном объеме
     {
@@ -172,7 +181,7 @@ int main() {
     x += y;
     std::cout << x << '\n';
     std::cout << x.capacity << '\n';
-    x.reserve(30);
+    x.resize(10);
     std::cout << x << '\n';
     std::cout << x.capacity;
     
