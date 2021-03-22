@@ -98,11 +98,31 @@ struct string {
         return !(*this > other);
     }
 
-    string& operator+= (const string& other) {  }
+    string& operator+= (const string& other)
+    {
+        int new_size = size + other.size;
+
+        while (capacity <= new_size)
+        {
+            capacity = capacity * 2;
+            realloc(str, capacity + 1);
+        }
+
+        
+        for (int i = size; i < new_size; i++)
+        {
+            str[i] = other.str[i - size];
+        }
+
+        size = new_size;
+        str[size] = '\0';
+
+        return *this;
+    }
 
     char operator[] (unsigned int pos) const {return str[pos];}
 
-    void append(const string other);  // дописать в конец данной строки другую
+    void append(const string other) {*this += other;}  // дописать в конец данной строки другую
 
     void resize(unsigned int new_capacity);  // увеличить/уменьшить емкость строки
 
@@ -142,9 +162,13 @@ int stoi(const string str, size_t pos = 0, int base = 10 );
 
 int main() {
 
-    string x;
-    std::cin >> x;
-    std::cout << x;
+    string x(5, 'a');
+    std::cout << x << '\n';
+    string y(6, 'b');
+    std::cout << y << '\n';
+    x += y;
+    x.append(y);
+    std::cout << x << '\n';
     
     return 0;
 }
