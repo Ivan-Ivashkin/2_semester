@@ -107,7 +107,6 @@ struct string {
             capacity = capacity * 2;
             realloc(str, capacity + 1);
         }
-
         
         for (int i = size; i < new_size; i++)
         {
@@ -124,9 +123,14 @@ struct string {
 
     void append(const string other) {*this += other;}  // дописать в конец данной строки другую
 
-    void resize(unsigned int new_capacity);  // увеличить/уменьшить емкость строки
+    void resize(unsigned int new_capacity) // увеличить/уменьшить емкость строки
+    {};
 
-    void reserve(unsigned int capacity); // зарезервировать память в нужном объеме
+    void reserve(unsigned int new_capacity) // зарезервировать память в нужном объеме
+    {
+        realloc(str, new_capacity + 1);
+        capacity = new_capacity;
+    }
 
     void insert(unsigned int pos, string other);  // Вставка другой строки внутрь данной
 
@@ -140,7 +144,6 @@ struct string {
     };
 
     friend std::ostream& operator<< (std::ostream& ostr, const string& str) {return ostr << str.str;}
-
     friend std::istream& operator>> (std::istream& istr, const string& str) {return istr >> str.str;}
 
 };
@@ -167,8 +170,11 @@ int main() {
     string y(6, 'b');
     std::cout << y << '\n';
     x += y;
-    x.append(y);
     std::cout << x << '\n';
+    std::cout << x.capacity << '\n';
+    x.reserve(30);
+    std::cout << x << '\n';
+    std::cout << x.capacity;
     
     return 0;
 }
