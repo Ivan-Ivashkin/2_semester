@@ -2,17 +2,22 @@
 #include <random>
 
 void selection_sort(int A[], int n) {
+
     for (int curr = 0; curr < n; curr++) {
+
         int min = curr;
+
         for (int i = curr; i < n; i++) {
             if (A[i] < A[min]) {
                 min = i;
             }
         }
+
         int c;
         c = A[curr];
         A[curr] = A[min];
         A[min] = c;
+
     }
 }
 
