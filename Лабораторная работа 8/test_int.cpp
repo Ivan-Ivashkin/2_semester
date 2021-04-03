@@ -46,13 +46,13 @@ void qsort(int A[], int first, int last) {
     int i, j;
     i = first;
     j = last;
+
     int x = A[(first + last)/2]; // опорный элемент берется из середины
     int mem;
+
     do {
         while (A[i] < x) {i++;}
-        std::cout << "---debug2---";
         while (A[j] > x) {j--;}
-        std::cout << "---debug3---";
         if (i <= j) {
             if (i < j) {
                 mem = A[i];
@@ -64,22 +64,20 @@ void qsort(int A[], int first, int last) {
             }
         }
     } while (i <= j);
-    std::cout << "---debug4---";
+
     if (i < last) {qsort(A, i, last);}
-    std::cout << "---debug5---";
     if (first < j) {qsort(A, first, j);}
+
 }
 
 int main() {
 
-    int n = 1000;
-
-    while (n < 10000) {
+    int n = 20;
 
     std::cout << n << "; ";
 
     int A[n], B[n];
-    std::mt19937 engine(134); // 134 - произвольное число
+    std::mt19937 engine(13); // 134 - произвольное число
     for (int i = 0; i < n; i++) {
         std::uniform_int_distribution<int> int_dist(0, 10000);
         A[i] = int_dist(engine);
@@ -91,7 +89,7 @@ int main() {
     auto end = std::chrono::high_resolution_clock::now();
     auto nsec = end - start;
     std::cout << nsec.count() << " ns; ";}
-    
+
     {B[n] = A[n];
     auto start = std::chrono::high_resolution_clock::now();
         selection_sort(B, n);
@@ -108,14 +106,10 @@ int main() {
 
     {B[n] = A[n];
     auto start = std::chrono::high_resolution_clock::now();
-        std::cout << "---debug1---";
         qsort(B, 0, n-1);
     auto end = std::chrono::high_resolution_clock::now();
     auto nsec = end - start;
     std::cout << nsec.count() << " ns;" << std::endl;}
-
-    n = n + 10000;
-    }
 
     return 0;
 }
