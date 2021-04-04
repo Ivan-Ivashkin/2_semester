@@ -1,8 +1,6 @@
-#include <iostream>
-#include <random>
-#include <chrono>
 
-void buble_sort(int A[], int n) {
+
+void bubble_sort(int A[], int n) {
     for (int j = 0; j < n-1; j++) {
         for (int i = 0; i < n-1; i++) {
             int c;
@@ -42,74 +40,150 @@ void insertion_sort(int A[], int n) {
     }
 }
 
-void qsort(int A[], int first, int last) {
-    int i, j;
-    i = first;
-    j = last;
-
-    int x = A[(first + last)/2]; // опорный элемент берется из середины
-    int mem;
-
+void qsort(int *A, int first, int last) {
+    int x, count;
+    int i = first, j = last;
+    x = A[(i+j)/2]; // опорный берется из середины
     do {
         while (A[i] < x) {i++;}
         while (A[j] > x) {j--;}
         if (i <= j) {
-            if (i < j) {
-                mem = A[i];
-                A[i] = A[j];
-                A[j] = mem;
-            } else {
-                i++;
-                j--;
-            }
+            count = A[i];
+            A[i] = A[j];
+            A[j] = count;
+            i++;
+            j--;
         }
-    } while (i <= j);
-
-    if (i < last) {qsort(A, i, last);}
+    } while (i < j);
     if (first < j) {qsort(A, first, j);}
-
+    if (i < last) {qsort(A, i, last);}
 }
 
 int main() {
 
-    int n = 20;
+    std::mt19937 engine(13); // 13 - произвольное число
+    std::uniform_int_distribution<int> int_dist(0, 10000);
 
-    std::cout << n << "; ";
+    std::ofstream fout;
 
-    int A[n], B[n];
-    std::mt19937 engine(13); // 134 - произвольное число
-    for (int i = 0; i < n; i++) {
-        std::uniform_int_distribution<int> int_dist(0, 10000);
-        A[i] = int_dist(engine);
+    fout.open("Quick_sort.txt");
+    std::cout << "Starting Quick sort" << std::endl;
+    for (int n = 5000; n <= 5005000; n = n + 10000) {
+
+        int *A = new int[n];
+        for (int i = 0; i < n; i++) {
+            A[i] = int_dist(engine);
+        }
+
+        std::cout << n << "; ";
+        fout << n << "; ";
+        auto start = std::chrono::high_resolution_clock::now();
+            qsort(A, 0, n-1);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto nsec = end - start;
+        std::cout << nsec.count() << ";" << std::endl;
+        fout << nsec.count() << ";" << std::endl;
+        delete []A;
+        }
+    fout.close();
+
+    fout.open("Insertion_sort.txt");
+    std::cout << "Starting Insertion sort" << std::endl;
+    int n = 1000;
+    while (n <= 1000000) {
+
+        int *A = new int[n];
+        for (int i = 0; i < n; i++) {
+            A[i] = int_dist(engine);
+        }
+
+        std::cout << n << "; ";
+        fout << n << "; ";
+        auto start = std::chrono::high_resolution_clock::now();
+            insertion_sort(A, n);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto nsec = end - start;
+        std::cout << nsec.count() << ";" << std::endl;
+        fout << nsec.count() << ";" << std::endl;
+        delete []A;
+
+        if (n < 10000) {
+            n = n + 1000;
+        } else if (n < 100000) {
+            n = n + 10000;
+        } else if (n < 500000) {
+            n = 500000;
+        } else if (n < 1000000) {
+            n = 1000000;
+        } else if (n = 1000000) {
+            n = 1000001;
+        }
     }
+    fout.close();
 
-    {B[n] = A[n];
-    auto start = std::chrono::high_resolution_clock::now();
-        buble_sort(B, n);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto nsec = end - start;
-    std::cout << nsec.count() << " ns; ";}
+    fout.open("Selection_sort.txt");
+    std::cout << "Starting Selection sort" << std::endl;
+    n = 1000;
+    while (n <= 500000) {
 
-    {B[n] = A[n];
-    auto start = std::chrono::high_resolution_clock::now();
-        selection_sort(B, n);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto nsec = end - start;
-    std::cout << nsec.count() << " ns; ";}
+        int *A = new int[n];
+        for (int i = 0; i < n; i++) {
+            A[i] = int_dist(engine);
+        }
 
-    {B[n] = A[n];
-    auto start = std::chrono::high_resolution_clock::now();
-        insertion_sort(B, n);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto nsec = end - start;
-    std::cout << nsec.count() << " ns; ";}
+        std::cout << n << "; ";
+        fout << n << "; ";
+        auto start = std::chrono::high_resolution_clock::now();
+            selection_sort(A, n);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto nsec = end - start;
+        std::cout << nsec.count() << ";" << std::endl;
+        fout << nsec.count() << ";" << std::endl;
+        delete []A;
 
-    {B[n] = A[n];
-    auto start = std::chrono::high_resolution_clock::now();
-        qsort(B, 0, n-1);
-    auto end = std::chrono::high_resolution_clock::now();
-    auto nsec = end - start;
-    std::cout << nsec.count() << " ns;" << std::endl;}
+        if (n < 10000) {
+            n = n + 1000;
+        } else if (n < 100000) {
+            n = n + 10000;
+        } else if (n < 500000) {
+            n = 500000;
+        } else if (n = 500000) {
+            n = 500001;
+        }
+    }
+    fout.close();
+
+    fout.open("Bubble_sort.txt");
+    std::cout << "Starting Bubble sort" << std::endl;
+    n = 1000;
+    while (n <= 500000) {
+
+        int *A = new int[n];
+        for (int i = 0; i < n; i++) {
+            A[i] = int_dist(engine);
+        }
+
+        std::cout << n << "; ";
+        fout << n << "; ";
+        auto start = std::chrono::high_resolution_clock::now();
+            bubble_sort(A, n);
+        auto end = std::chrono::high_resolution_clock::now();
+        auto nsec = end - start;
+        std::cout << nsec.count() << ";" << std::endl;
+        fout << nsec.count() << ";" << std::endl;
+        delete []A;
+
+        if (n < 10000) {
+            n = n + 1000;
+        } else if (n < 100000) {
+            n = n + 10000;
+        } else if (n < 500000) {
+            n = 500000;
+        } else if (n = 500000) {
+            n = 500001;
+        }
+    }
+    fout.close();
 
     return 0;
 }
