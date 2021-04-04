@@ -1,32 +1,23 @@
 #include <iostream>
 #include <random>
 
-void qsort(int A[], int first, int last) {
-    int i, j;
-    i = first;
-    j = last;
-
-    int x = A[(first + last)/2]; // опорный элемент берется из середины
-    int mem;
-    
+void qsort(int *A, int first, int last) {
+    int x, count;
+    int i = first, j = last;
+    x = A[(i+j)/2]; // опорный берется из середины
     do {
         while (A[i] < x) {i++;}
         while (A[j] > x) {j--;}
         if (i <= j) {
-            if (i < j) {
-                mem = A[i];
-                A[i] = A[j];
-                A[j] = mem;
-            } else {
-                i++;
-                j--;
-            }
+            count = A[i];
+            A[i] = A[j];
+            A[j] = count;
+            i++;
+            j--;
         }
-    } while (i <= j);
-
-    if (i < last) {qsort(A, i, last);}
+    } while (i < j);
     if (first < j) {qsort(A, first, j);}
-
+    if (i < last) {qsort(A, i, last);}
 }
 
 int main() {
