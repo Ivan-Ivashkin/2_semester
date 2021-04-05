@@ -1,42 +1,30 @@
 #include <iostream>
 
-typedef struct Node
+struct Node
 {
     int key;
     int value;
     Node * next;
 };
 
-Node* init(int size)
-{
-    Node* head = new Node;
-    // (*head)->value = value;
-    (head)->next = NULL;
-    (head)->key = 0;
-
-    Node * p_node = head;
-
-    for (int i = 1; i < size; i++)
-    {
-        Node * new_node = new Node;
-        p_node->next = new_node;
-        p_node->key = i;
-        // new_node->value = value;
-        p_node = p_node->next;
-    }
-
-    p_node->next = NULL;
-
-    return head;
-}
-
 struct HashMap
 {
-    int key;
-    int em_key; // emergency key
+    int key, em_key; // emergency key
     int size;
     int n_elements;
     Node * table[];
+
+    HashMap()
+    {
+        key = 0;
+        em_key = 0;
+        n_elements = 0;
+
+        for (int i = 0; i < size; i++)
+        {
+            table[size] = NULL;
+        }
+    }
 
     int hash(int x)
     {
@@ -50,7 +38,11 @@ struct HashMap
 
     void add(int x, int value)
     {
+        int i = 0;
+        while (table[hash(x) + i*em_hash(x)] != NULL) i++;
 
+        table[hash(x) + i*em_hash(x)]->value = value;
+        table[hash(x) + i*em_hash(x)]->key = x;
     }
 
     int get(int x)
