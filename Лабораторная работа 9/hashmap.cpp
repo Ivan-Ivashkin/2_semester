@@ -4,7 +4,7 @@ struct Node
 {
     int key;
     int value;
-    Node * next;
+    bool is_deleted;
 };
 
 struct HashMap
@@ -60,8 +60,30 @@ struct HashMap
 
     }
 
+    void print()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            std::cout << table[i]->value << " ";
+        }
+    }
+
 };
 
 int main() {
+
+    HashMap A;
+
+    A.size = 20;
+    A.key = 7;
+    A.em_key = 13;
+
+    for (int i = 0; i < A.size; i++)
+    {
+        A.add(i, i);
+    }
+
+    A.print();
+
     return 0;
 }
