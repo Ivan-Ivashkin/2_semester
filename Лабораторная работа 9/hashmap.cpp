@@ -4,26 +4,33 @@ struct Node
 {
     int key;
     int value;
-    bool is_deleted;
+    bool deleted = true;
 };
 
 struct HashMap
 {
-    int key, em_key; // emergency key
     int size;
+    int key;
+    int col_key;
     int n_elements;
-    Node * table[];
+    Node **table;
 
     HashMap()
     {
-        key = 0;
-        em_key = 0;
+        size = 100;
+        key = size - 1;
+        col_key = size + 1; //collision key
         n_elements = 0;
+        table = new Node* [100];
+    }
 
+    ~HashMap()
+    {
         for (int i = 0; i < size; i++)
         {
-            table[size] = NULL;
+            delete table[i];
         }
+        delete[] table;
     }
 
     int hash(int x)
@@ -31,59 +38,53 @@ struct HashMap
         return (x * key) % size;
     }
 
-    int em_hash(int x)
+    int col_hash(int x)
     {
-        return (x * em_key) % size;
+        return (x * col_key) % size;
+    }
+
+    int count_hash(int x, int i)
+    {
+        int a = hash(x);
+        for (int j = 0; j < i; j++) {
+            a = a + col_hash(x);
+        }
+        return a;
     }
 
     void add(int x, int value)
     {
         int i = 0;
-        while (table[hash(x) + i*em_hash(x)] != NULL) i++;
+        while (table[count_hash(x, i)] == NULL) {i++;}
 
-        table[hash(x) + i*em_hash(x)]->value = value;
-        table[hash(x) + i*em_hash(x)]->key = x;
+        table[count_hash(x, i)] = new Node;
+
+        table[count_hash(x, i)]->key = x;
+        table[count_hash(x, i)]->value = value;
+        table[count_hash(x, i)]->deleted = false;
     }
 
     int get(int x)
     {
-
+        return 0;
     }
 
     void reallocate()
-    {
-
-    }
+    {}
 
     int pop(int x)
     {
-
-    }
-
-    void print()
-    {
-        for (int i = 0; i < size; i++)
-        {
-            std::cout << table[i]->value << " ";
-        }
+        return 0;
     }
 
 };
 
 int main() {
 
+    using std::cout;
+
     HashMap A;
-
-    A.size = 20;
-    A.key = 7;
-    A.em_key = 13;
-
-    for (int i = 0; i < A.size; i++)
-    {
-        A.add(i, i);
-    }
-
-    A.print();
+    A.add(3, 17);
 
     return 0;
 }
